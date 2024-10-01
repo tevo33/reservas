@@ -27,10 +27,8 @@ public class ReservasBackendApplication implements CommandLineRunner {
         Bem novoBem = new Bem();
         novoBem.setDescricao("Projetor");
         novoBem.setPermiteReserva(true);
-        novoBem.setStatusBem(StatusBem.DISPONIVEL); // Usando o enum diretamente
-        novoBem.setTipoBem(TipoBem.EQUIPAMENTO);    // Usando o enum diretamente
-
-        // Salvando o Bem no banco de dados
+        novoBem.setStatusBem(StatusBem.DISPONIVEL); 
+        novoBem.setTipoBem(TipoBem.EQUIPAMENTO);
         Bem bemSalvo = bemService.criarBem(novoBem);
 
         System.out.println("Bem salvo: " + bemSalvo.getDescricao());

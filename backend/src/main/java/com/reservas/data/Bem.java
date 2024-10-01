@@ -22,10 +22,10 @@ public class Bem {
 
     private Boolean permiteReserva;
 
-    @Enumerated(EnumType.STRING)  // Armazena o valor do enum como String no banco
+    @Enumerated(EnumType.STRING)
     private StatusBem statusBem;
 
-    @Enumerated(EnumType.STRING)  // Armazena o valor do enum como String no banco
+    @Enumerated(EnumType.STRING)
     private TipoBem tipoBem;
 }
 

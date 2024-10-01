@@ -31,8 +31,7 @@ public class Retirada {
     @OneToMany(mappedBy = "retirada")
     private List<ItensRetirada> itensRetirada;
     
-    @ManyToOne
-    @JoinColumn(name = "id_motivo_retirada", referencedColumnName = "idMotivo")
+    @Enumerated(EnumType.STRING)
     private MotivoRetirada motivoRetirada;
     
     private String observacao;

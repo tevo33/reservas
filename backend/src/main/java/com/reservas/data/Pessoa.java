@@ -20,7 +20,6 @@ public class Pessoa {
 
     private String nome;
 
-    @ManyToOne
-    @JoinColumn(name = "id_tipo_pessoa", referencedColumnName = "idTipoPessoa")
+    @Enumerated(EnumType.STRING)  // Armazena o valor do enum como String no banco
     private TipoPessoa tipoPessoa;
 }
