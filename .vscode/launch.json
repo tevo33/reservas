@@ -1,0 +1,21 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "ApplicationTest",
+      "request": "launch",
+      "mainClass": "com.reservas.ApplicationTest",
+      "projectName": "reservas-backend"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-ReservasBackendApplication<reservas-backend>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.reservas.ReservasBackendApplication",
+      "projectName": "reservas-backend",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

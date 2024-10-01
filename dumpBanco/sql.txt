@@ -1,0 +1,87 @@
+-- Tabela para armazenar os diferentes tipos de status de um bem
+CREATE TABLE status_bem (
+    id_status SERIAL PRIMARY KEY,
+    status VARCHAR(50) NOT NULL
+);
+
+-- Tabela para armazenar os diferentes tipos de bens
+CREATE TABLE tipo_bem (
+    id_tipo_bem SERIAL PRIMARY KEY,
+    tipo_bem VARCHAR(50) NOT NULL
+);
+
+-- Tabela para armazenar os tipos de pessoas (por exemplo, funcionário, cliente)
+CREATE TABLE tipo_pessoa (
+    id_tipo_pessoa SERIAL PRIMARY KEY,
+    tipo_pessoa VARCHAR(50) NOT NULL,
+    descricao TEXT
+);
+
+-- Tabela de pessoas que podem fazer reservas ou retiradas
+CREATE TABLE pessoa (
+    id_pessoa SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    id_tipo_pessoa INT NOT NULL,
+    FOREIGN KEY (id_tipo_pessoa) REFERENCES tipo_pessoa(id_tipo_pessoa)
+);
+
+-- Tabela para armazenar os diferentes motivos de retirada
+CREATE TABLE motivo_retirada (
+    id_motivo SERIAL PRIMARY KEY,
+    motivo VARCHAR(255) NOT NULL
+);
+
+-- Tabela para armazenar os bens disponíveis para reserva e retirada
+CREATE TABLE bem (
+    id_bem SERIAL PRIMARY KEY,
+    descricao TEXT NOT NULL,
+    permite_reserva BOOLEAN NOT NULL,
+    id_status_bem INT,
+    id_tipo_bem INT,
+    FOREIGN KEY (id_status_bem) REFERENCES status_bem(id_status),
+    FOREIGN KEY (id_tipo_bem) REFERENCES tipo_bem(id_tipo_bem)
+);
+
+-- Tabela de reservas feitas por pessoas
+CREATE TABLE reserva (
+    id_reserva SERIAL PRIMARY KEY,
+    id_pessoa INT NOT NULL,
+    data_reserva DATE NOT NULL,
+    data_validade_reserva DATE,
+    quantidade_bem INT,
+    FOREIGN KEY (id_pessoa) REFERENCES pessoa(id_pessoa)
+);
+
+-- Tabela de itens reservados, relacionando reservas e bens
+CREATE TABLE itens_reserva (
+    id SERIAL PRIMARY KEY,
+    id_reserva INT NOT NULL,
+    id_bem INT NOT NULL,
+    quantidade_bem INT,
+    FOREIGN KEY (id_reserva) REFERENCES reserva(id_reserva),
+    FOREIGN KEY (id_bem) REFERENCES bem(id_bem)
+);
+
+-- Tabela de retiradas feitas por pessoas
+CREATE TABLE retirada (
+    id_retirada SERIAL PRIMARY KEY,
+    id_pessoa INT NOT NULL,
+    data_retirada DATE,
+    data_devolucao DATE,
+    data_limite DATE,
+    quantidade_bem INT,
+    observacao TEXT,
+    id_motivo_retirada INT,
+    FOREIGN KEY (id_pessoa) REFERENCES pessoa(id_pessoa),
+    FOREIGN KEY (id_motivo_retirada) REFERENCES motivo_retirada(id_motivo)
+);
+
+-- Tabela de itens retirados, relacionando retiradas e bens
+CREATE TABLE itens_retirada (
+    id SERIAL PRIMARY KEY,
+    id_retirada INT NOT NULL,
+    id_bem INT NOT NULL,
+    quantidade_bem INT,
+    FOREIGN KEY (id_retirada) REFERENCES retirada(id_retirada),
+    FOREIGN KEY (id_bem) REFERENCES bem(id_bem)
+);
