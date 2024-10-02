@@ -1,56 +1,84 @@
-import "./App.css";
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import './App.css';
+import Cadastros from './components/Cadastros';
+import ProcessosBem from './components/ProcessosBem';
+import Reservas from './components/Reservas';
+import Multas from './components/Multas';
+import MinhasReservas from './components/MinhasReservas';
+import RelatoriosBens from './components/RelatoriosBens';
+import Login from './components/Login';
 
-function App({ userName }) {
+function MainMenu({ userName }) {
   return (
     <div className="flex min-h-screen bg-gray-200 text-black">
       <aside className="bg-blue-900 w-64 p-6 text-white">
         <h1 className="text-2xl font-bold mb-6">Reservas de Itens</h1>
         <p className="text-lg mb-4">Olá, {userName}</p>
-        <h2 className="text-xl font-semibold mb-4 text-yellow-400">
-          Menu Principal
-        </h2>
+        <h2 className="text-xl font-semibold mb-4 text-yellow-400">Menu Principal</h2>
         <nav>
           <ul className="space-y-4">
             <li>
-              <a href="#cadastros" className="block hover:underline">
+              <Link to="/cadastros" className="block hover:underline">
                 Cadastros
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#processos-bem" className="block hover:underline">
+              <Link to="/processos-bem" className="block hover:underline">
                 Processos Bem
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#reservas" className="block hover:underline">
+              <Link to="/reservas" className="block hover:underline">
                 Reservas
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#multas" className="block hover:underline">
+              <Link to="/multas" className="block hover:underline">
                 Multas
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#minhas-reservas" className="block hover:underline">
+              <Link to="/minhas-reservas" className="block hover:underline">
                 Minhas reservas/retiradas
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#relatorios-bens" className="block hover:underline">
+              <Link to="/relatorios-bens" className="block hover:underline">
                 Relatórios Bens
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#logout" className="block hover:underline">
+              <Link to="/logout" className="block hover:underline">
                 Logout
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>
       </aside>
-      <main className="flex-1 p-6">{/* Conteúdo principal */}</main>
+      <main className="flex-1 p-6">
+        <Routes>
+          <Route path="/cadastros" element={<Cadastros />} />
+          <Route path="/processos-bem" element={<ProcessosBem />} />
+          <Route path="/reservas" element={<Reservas />} />
+          <Route path="/multas" element={<Multas />} />
+          <Route path="/minhas-reservas" element={<MinhasReservas />} />
+          <Route path="/relatorios-bens" element={<RelatoriosBens />} />
+          {/* Adicione outras rotas conforme necessário */}
+        </Routes>
+      </main>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/main/*" element={<MainMenu userName="Usuário" />} />
+      </Routes>
+    </Router>
   );
 }
 
