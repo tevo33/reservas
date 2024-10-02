@@ -29,4 +29,12 @@ public class PessoaService {
     public void deletarPessoa(Long idPessoa) {
         pessoaRepository.deleteById(idPessoa);
     }
+
+    public Optional<Pessoa> verificarCodigoESenha(String codigo, String senha) {
+        Optional<Pessoa> pessoa = pessoaRepository.findByCodigo(codigo);
+        if (pessoa.isPresent() && pessoa.get().getSenha().equals(senha)) {
+            return pessoa;
+        }
+        return Optional.empty();
+    }
 }

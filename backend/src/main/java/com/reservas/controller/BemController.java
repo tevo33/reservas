@@ -16,13 +16,11 @@ public class BemController {
     @Autowired
     private BemService bemService;
 
-    // Listar todos os bens
     @GetMapping
     public List<Bem> listarTodos() {
         return bemService.listarTodos();
     }
 
-    // Buscar bem por ID
     @GetMapping("/{id}")
     public ResponseEntity<Bem> buscarPorId(@PathVariable Long id) {
         Optional<Bem> bem = bemService.buscarPorId(id);
@@ -30,7 +28,6 @@ public class BemController {
                   .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Criar um novo bem
     @PostMapping
     public Bem criarBem(@RequestBody Bem bem) {
         return bemService.criarBem(bem);

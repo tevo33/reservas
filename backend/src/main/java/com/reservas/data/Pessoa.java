@@ -20,6 +20,9 @@ public class Pessoa {
 
     private String nome;
 
-    @Enumerated(EnumType.STRING)  // Armazena o valor do enum como String no banco
+    private String codigo;
+    private String senha;
+
+    @Enumerated(EnumType.STRING)
     private TipoPessoa tipoPessoa;
 }
