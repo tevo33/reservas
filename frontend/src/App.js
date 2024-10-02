@@ -19,32 +19,32 @@ function MainMenu({ userName }) {
         <nav>
           <ul className="space-y-4">
             <li>
-              <Link to="/cadastros" className="block hover:underline">
+              <Link to="/main/cadastros" className="block hover:underline">
                 Cadastros
               </Link>
             </li>
             <li>
-              <Link to="/processos-bem" className="block hover:underline">
+              <Link to="/main/processos-bem" className="block hover:underline">
                 Processos Bem
               </Link>
             </li>
             <li>
-              <Link to="/reservas" className="block hover:underline">
+              <Link to="/main/reservas" className="block hover:underline">
                 Reservas
               </Link>
             </li>
             <li>
-              <Link to="/multas" className="block hover:underline">
+              <Link to="/main/multas" className="block hover:underline">
                 Multas
               </Link>
             </li>
             <li>
-              <Link to="/minhas-reservas" className="block hover:underline">
+              <Link to="/main/minhas-reservas" className="block hover:underline">
                 Minhas reservas/retiradas
               </Link>
             </li>
             <li>
-              <Link to="/relatorios-bens" className="block hover:underline">
+              <Link to="/main/relatorios-bens" className="block hover:underline">
                 Relatórios Bens
               </Link>
             </li>
@@ -58,12 +58,12 @@ function MainMenu({ userName }) {
       </aside>
       <main className="flex-1 p-6">
         <Routes>
-          <Route path="/cadastros" element={<Cadastros />} />
-          <Route path="/processos-bem" element={<ProcessosBem />} />
-          <Route path="/reservas" element={<Reservas />} />
-          <Route path="/multas" element={<Multas />} />
-          <Route path="/minhas-reservas" element={<MinhasReservas />} />
-          <Route path="/relatorios-bens" element={<RelatoriosBens />} />
+          <Route path="cadastros" element={<Cadastros />} />
+          <Route path="processos-bem" element={<ProcessosBem />} />
+          <Route path="reservas" element={<Reservas />} />
+          <Route path="multas" element={<Multas />} />
+          <Route path="minhas-reservas" element={<MinhasReservas />} />
+          <Route path="relatorios-bens" element={<RelatoriosBens />} />
           {/* Adicione outras rotas conforme necessário */}
         </Routes>
       </main>
@@ -77,6 +77,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/main/*" element={<MainMenu userName="Usuário" />} />
+        {/* Adicione uma rota padrão para redirecionar para a página de login */}
+        <Route path="*" element={<Login />} />
       </Routes>
     </Router>
   );

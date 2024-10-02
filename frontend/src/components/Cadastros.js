@@ -4,12 +4,12 @@ function Cadastros() {
     const [selectedOption, setSelectedOption] = useState('Bens');
 
     const renderContent = () => {
+        console.log('Selected Option:', selectedOption);
         switch (selectedOption) {
             case 'Bens':
                 return (
                     <div>
                         <h3>Bens</h3>
-                        {/* Adicione aqui o conteúdo da sub-opção Bens */}
                         <p>Conteúdo da sub-opção Bens.</p>
                     </div>
                 );
@@ -17,7 +17,6 @@ function Cadastros() {
                 return (
                     <div>
                         <h3>Kits</h3>
-                        {/* Adicione aqui o conteúdo da sub-opção Kits */}
                         <p>Conteúdo da sub-opção Kits.</p>
                     </div>
                 );
@@ -25,7 +24,6 @@ function Cadastros() {
                 return (
                     <div>
                         <h3>Tipo de Bem</h3>
-                        {/* Adicione aqui o conteúdo da sub-opção Tipo de Bem */}
                         <p>Conteúdo da sub-opção Tipo de Bem.</p>
                     </div>
                 );
