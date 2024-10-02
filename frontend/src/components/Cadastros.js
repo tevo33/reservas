@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './Cadastros.css';
 
 function Cadastros() {
     const [selectedOption, setSelectedOption] = useState('Bens');
@@ -33,14 +34,16 @@ function Cadastros() {
     };
 
     return (
-        <div>
-            <h2>Cadastros</h2>
-            <div className="menu-flutuante">
-                <button onClick={() => setSelectedOption('Bens')} className="menu-button">Bens</button>
-                <button onClick={() => setSelectedOption('Kits')} className="menu-button">Kits</button>
-                <button onClick={() => setSelectedOption('TipoDeBem')} className="menu-button">Tipo de bem</button>
+        <div className="container">
+            <div className="sidebar">
+                {/* Sidebar content can go here */}
             </div>
             <div className="content">
+                <div className="menu-buttons">
+                    <button onClick={() => setSelectedOption('Bens')} className="menu-button">Bens</button>
+                    <button onClick={() => setSelectedOption('Kits')} className="menu-button">Kits</button>
+                    <button onClick={() => setSelectedOption('TipoDeBem')} className="menu-button">Tipo de bem</button>
+                </div>
                 {renderContent()}
             </div>
         </div>

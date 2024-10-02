@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+}
+
+
+.content {
+    margin-left: 200px;
+    /* Adjust margin to account for sidebar */
+    padding: 20px;
+    /* Add padding to avoid content being hidden behind the sidebar */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin-top: 20px;
+}
+
+.menu-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.menu-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.menu-button:hover {
+    background-color: #0056b3;
+}
