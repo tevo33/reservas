@@ -1,13 +1,14 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import './App.css';
-import Cadastros from './components/Cadastros';
-import ProcessosBem from './components/ProcessosBem';
-import Reservas from './components/Reservas';
-import Multas from './components/Multas';
-import MinhasReservas from './components/MinhasReservas';
-import RelatoriosBens from './components/RelatoriosBens';
-import Login from './components/Login';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import "./App.css";
+import Cadastros from "./components/Cadastros";
+import ProcessosBem from "./components/ProcessosBem";
+import Reservas from "./components/Reservas";
+import Multas from "./components/Multas";
+import MinhasReservas from "./components/MinhasReservas";
+import RelatoriosBens from "./components/RelatoriosBens";
+import Login from "./components/Login";
+import CadastroPessoas from "./components/CadastroPessoas";
 
 function MainMenu({ userName }) {
   return (
@@ -15,7 +16,9 @@ function MainMenu({ userName }) {
       <aside className="bg-blue-900 w-64 p-6 text-white">
         <h1 className="text-2xl font-bold mb-6">Reservas de Itens</h1>
         <p className="text-lg mb-4">Olá, {userName}</p>
-        <h2 className="text-xl font-semibold mb-4 text-yellow-400">Menu Principal</h2>
+        <h2 className="text-xl font-semibold mb-4 text-yellow-400">
+          Menu Principal
+        </h2>
         <nav>
           <ul className="space-y-4">
             <li>
@@ -39,13 +42,27 @@ function MainMenu({ userName }) {
               </Link>
             </li>
             <li>
-              <Link to="/main/minhas-reservas" className="block hover:underline">
+              <Link
+                to="/main/minhas-reservas"
+                className="block hover:underline"
+              >
                 Minhas reservas/retiradas
               </Link>
             </li>
             <li>
-              <Link to="/main/relatorios-bens" className="block hover:underline">
+              <Link
+                to="/main/relatorios-bens"
+                className="block hover:underline"
+              >
                 Relatórios Bens
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/main/cadastro-pessoas"
+                className="block hover:underline"
+              >
+                Cadastro de Pessoas
               </Link>
             </li>
             <li>
@@ -64,7 +81,8 @@ function MainMenu({ userName }) {
           <Route path="multas" element={<Multas />} />
           <Route path="minhas-reservas" element={<MinhasReservas />} />
           <Route path="relatorios-bens" element={<RelatoriosBens />} />
-          {/* Adicione outras rotas conforme necessário */}
+          <Route path="cadastro-pessoas" element={<CadastroPessoas />} />{" "}
+          {/* Nova rota */}
         </Routes>
       </main>
     </div>

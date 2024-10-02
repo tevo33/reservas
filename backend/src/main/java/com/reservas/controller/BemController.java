@@ -33,7 +33,6 @@ public class BemController {
         return bemService.criarBem(bem);
     }
 
-    // Atualizar um bem existente
     @PutMapping("/{id}")
     public ResponseEntity<Bem> atualizarBem(@PathVariable Long id, @RequestBody Bem bemAtualizado) {
         try {
@@ -43,7 +42,6 @@ public class BemController {
         }
     }
 
-    // Deletar um bem
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarBem(@PathVariable Long id) {
         bemService.deletarBem(id);

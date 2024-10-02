@@ -22,7 +22,7 @@ function Login() {
         }
       );
 
-      navigate("/main", { state: { userName: codigo } });
+      navigate("/main/cadastro-pessoas", { state: { userName: codigo } });
     } catch (error) {
       if (error.response && error.response.status === 401) {
         alert("Código ou senha inválidos.");

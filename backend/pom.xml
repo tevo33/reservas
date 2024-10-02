@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.3</version>
+		<version>3.3.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.exemplo</groupId>
@@ -51,14 +51,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.28</version> <!-- Verifique se há uma versão mais recente -->
+			<artifactId>lombok</artifactId> <!-- Verifique se há uma versão mais recente -->
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.7.4</version>
 		</dependency>
 		<dependency>
     <groupId>org.springframework.security</groupId>
