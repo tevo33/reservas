@@ -34,13 +34,11 @@ public class RetiradaController {
 
     @PostMapping
     public Retirada criarRetirada(@RequestBody Retirada retirada) {
-        // Salvando a retirada principal
         Retirada novaRetirada = retiradaService.criarRetirada(retirada);
 
-        // Salvando os itens da retirada
         for (ItensRetirada item : retirada.getItensRetirada()) {
-            item.setRetirada(novaRetirada);  // Associando a retirada aos itens
-            itensRetiradaService.salvarItensRetirada(item);  // Salvando os itens
+            item.setRetirada(novaRetirada);
+            itensRetiradaService.salvarItensRetirada(item);
         }
 
         return novaRetirada;

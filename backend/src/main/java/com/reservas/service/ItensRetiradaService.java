@@ -14,22 +14,18 @@ public class ItensRetiradaService {
     @Autowired
     private ItensRetiradaRepository itensRetiradaRepository;
 
-    // Salvar um novo ItensRetirada
     public ItensRetirada salvarItensRetirada(ItensRetirada itensRetirada) {
         return itensRetiradaRepository.save(itensRetirada);
     }
 
-    // Buscar todos os itens de retirada
     public List<ItensRetirada> listarTodos() {
         return itensRetiradaRepository.findAll();
     }
 
-    // Buscar ItensRetirada por ID
     public Optional<ItensRetirada> buscarPorId(Long id) {
         return itensRetiradaRepository.findById(id);
     }
 
-    // Deletar ItensRetirada por ID
     public void deletarItensRetirada(Long id) {
         itensRetiradaRepository.deleteById(id);
     }

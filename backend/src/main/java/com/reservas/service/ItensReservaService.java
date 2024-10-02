@@ -14,22 +14,18 @@ public class ItensReservaService {
     @Autowired
     private ItensReservaRepository itensReservaRepository;
 
-    // Salvar um novo ItensReserva
     public ItensReserva salvarItensReserva(ItensReserva itensReserva) {
         return itensReservaRepository.save(itensReserva);
     }
 
-    // Buscar todos os itens de reserva
     public List<ItensReserva> listarTodos() {
         return itensReservaRepository.findAll();
     }
 
-    // Buscar ItensReserva por ID
     public Optional<ItensReserva> buscarPorId(Long id) {
         return itensReservaRepository.findById(id);
     }
 
-    // Deletar ItensReserva por ID
     public void deletarItensReserva(Long id) {
         itensReservaRepository.deleteById(id);
     }

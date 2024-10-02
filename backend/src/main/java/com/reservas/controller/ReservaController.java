@@ -34,13 +34,11 @@ public class ReservaController {
 
     @PostMapping
     public Reserva criarReserva(@RequestBody Reserva reserva) {
-        // Salvando a reserva principal
         Reserva novaReserva = reservaService.criarReserva(reserva);
 
-        // Salvando os itens da reserva
         for (ItensReserva item : reserva.getItensReserva()) {
-            item.setReserva(novaReserva);  // Associando a reserva aos itens
-            itensReservaService.salvarItensReserva(item);  // Salvando os itens
+            item.setReserva(novaReserva);
+            itensReservaService.salvarItensReserva(item);
         }
 
         return novaReserva;
