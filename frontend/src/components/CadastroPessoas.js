@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../api/api";
 
 function CadastroPessoas() {
   const [nome, setNome] = useState("");
@@ -16,7 +16,7 @@ function CadastroPessoas() {
     setSuccess(false);
 
     try {
-      const response = await axios.post("http://localhost:9090/api/pessoas", {
+        const response = await api.post("/pessoas", {
         nome: nome,
         codigo: codigo,
         senha: senha,

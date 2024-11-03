@@ -1,28 +1,35 @@
-import React, { useState } from "react";
+// components/Login.js
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api/api";
+import { AuthContext } from "../session/AuthContext";
 
 function Login() {
   const [codigo, setCodigo] = useState("");
   const [senha, setSenha] = useState("");
   const navigate = useNavigate();
+  const { handleLogin } = useContext(AuthContext);
 
-  const handleLogin = async () => {
+  const handleLoginSubmit = async () => {
     if (!codigo || !senha) {
       alert("Por favor, insira o código e a senha.");
       return;
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:9090/api/pessoas/login",
-        {
-          codigo: codigo,
-          senha: senha,
-        }
-      );
+      const response = await api.post("/pessoas/login", {
+        codigo: codigo,
+        senha: senha,
+      });
 
-      navigate("/main/cadastro-pessoas", { state: { userName: codigo } });
+      const token = response.data.token;
+
+      if (token) {
+        handleLogin(token);
+        navigate("/main/cadastro-pessoas");
+      } else {
+        alert("Não foi possível realizar o login. Token não recebido.");
+      }
     } catch (error) {
       if (error.response && error.response.status === 401) {
         alert("Código ou senha inválidos.");
@@ -35,7 +42,7 @@ function Login() {
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
-      handleLogin();
+      handleLoginSubmit();
     }
   };
 
@@ -52,7 +59,7 @@ function Login() {
           placeholder="Código"
           value={codigo}
           onChange={handleCodigoChange}
-          onKeyPress={handleKeyPress} // Adiciona evento para detectar Enter
+          onKeyPress={handleKeyPress}
           className="w-full p-2 mb-4 border border-gray-300 rounded"
         />
         <input
@@ -60,11 +67,11 @@ function Login() {
           placeholder="Senha"
           value={senha}
           onChange={(e) => setSenha(e.target.value)}
-          onKeyPress={handleKeyPress} // Adiciona evento para detectar Enter
+          onKeyPress={handleKeyPress}
           className="w-full p-2 mb-4 border border-gray-300 rounded"
         />
         <button
-          onClick={handleLogin}
+          onClick={handleLoginSubmit}
           className="w-full bg-blue-500 text-white p-2 rounded"
         >
           Entrar
