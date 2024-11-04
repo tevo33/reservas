@@ -1,40 +1,18 @@
 // session/AuthContext.js
-import React, { createContext, useState, useEffect } from 'react';
-import { setOnUnauthorized } from '../api/api';
+import React, { createContext, useState } from 'react';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [authenticated, setAuthenticated] = useState(null); // Inicialmente 'null'
-  const [userName, setUserName] = useState('');
+  const [authenticated, setAuthenticated] = useState(true); // Autenticado por padrão
+  const [userName, setUserName] = useState('Usuário Teste'); // Nome de usuário padrão
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    const storedUserName = localStorage.getItem('userName');
-
-    if (token) {
-      setAuthenticated(true);
-      setUserName(storedUserName || '');
-    } else {
-      setAuthenticated(false);
-    }
-
-    // Define o manipulador de logout para ser chamado pelo api.js
-    setOnUnauthorized(() => {
-      handleLogout();
-    });
-  }, []);
-
-  const handleLogin = (token, userName) => {
-    localStorage.setItem('token', token);
-    localStorage.setItem('userName', userName);
+  const handleLogin = () => {
     setAuthenticated(true);
-    setUserName(userName);
+    setUserName('Usuário Teste');
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userName');
     setAuthenticated(false);
     setUserName('');
   };
