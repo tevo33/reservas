@@ -12,13 +12,13 @@ import CadastroPessoas from "./CadastroPessoas";
 
 function MainMenu() {
   const { handleLogout } = useContext(AuthContext);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const userName = "Usuário";
+  const userName = "Usuário"; // Ajuste para obter o nome real do usuário, se disponível
 
   const logout = () => {
-    // handleLogout();
-    // navigate("/login");
+    handleLogout();
+    navigate("/login");
   };
 
   return (

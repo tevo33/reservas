@@ -16,24 +16,13 @@ function Login() {
       return;
     }
 
-    // Verifica se está em ambiente de desenvolvimento
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Ambiente de desenvolvimento - bypass na chamada à API');
-      handleLogin('fake-token');
-      navigate("/main/cadastro-pessoas");
-      return;
-    }
-
     try {
-      // const response = await api.post("/pessoas/login", {
-      //   codigo: codigo,
-      //   senha: senha,
-      // });
+      const response = await api.post("/pessoas/login", {
+        codigo: codigo,
+        senha: senha,
+      });
 
-      // const token = response.data.token;
-
-      // Simulação de resposta da API para ambiente de desenvolvimento
-      const token = 'fake-token';
+      const token = response.data.token;
 
       if (token) {
         handleLogin(token);
