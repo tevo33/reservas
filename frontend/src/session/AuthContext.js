@@ -5,7 +5,7 @@ import { setOnUnauthorized } from '../api/api';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [authenticated, setAuthenticated] = useState(null); // Inicialmente 'null'
+  const [authenticated, setAuthenticated] = useState(null);
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
@@ -19,7 +19,6 @@ export const AuthProvider = ({ children }) => {
       setAuthenticated(false);
     }
 
-    // Define o manipulador de logout para ser chamado pelo api.js
     setOnUnauthorized(() => {
       handleLogout();
     });

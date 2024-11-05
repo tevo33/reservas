@@ -25,7 +25,7 @@ function Login() {
       const token = response.data.token;
 
       if (token) {
-        handleLogin(token);
+        handleLogin(token, response.data.userName);
         navigate("/main/cadastro-pessoas");
       } else {
         alert("Não foi possível realizar o login. Token não recebido.");

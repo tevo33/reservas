@@ -25,6 +25,10 @@ public class PessoaService {
         return pessoaRepository.findById(idPessoa);
     }
 
+    public Optional<Pessoa> buscarPorCodigo(String nome) {
+        return pessoaRepository.findByCodigo(nome);
+    }
+
     public Pessoa criarPessoa(Pessoa pessoa) {
         String senhaCriptografada = passwordEncoder.encode(pessoa.getSenha());
         pessoa.setSenha(senhaCriptografada);

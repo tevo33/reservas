@@ -15,7 +15,7 @@ function ProcessosBem() {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    // Define a data atual como valor padrão
+    // Set the current date as the default value
     const today = new Date().toISOString().split('T')[0];
     setData(today);
   }, []);
@@ -25,7 +25,7 @@ function ProcessosBem() {
       const fetchBemNome = async () => {
         try {
           const response = await api.get(`/bens/${bemId}`);
-          setBemNome(response.data.nome);
+          setBemNome(response.data.descricao);
         } catch (err) {
           setBemNome('Bem não encontrado');
           console.error('Erro ao buscar nome do bem:', err);
@@ -75,16 +75,26 @@ function ProcessosBem() {
     try {
       let response;
       if (type === 'retirada') {
-        response = await api.post('/bens/retirada', {
-          bemId,
-          pessoaId,
+        response = await api.post('/retiradas', {
           data,
+          pessoa: { id: pessoaId },
+          itensRetirada: [
+            {
+              bem: { idBem: bemId },
+              quantidade: quantidade,
+            },
+          ],
         });
       } else if (type === 'devolucao') {
-        response = await api.post('/bens/devolucao', {
-          bemId,
-          pessoaId,
+        response = await api.post('/devolucoes', {
           data,
+          pessoa: { id: pessoaId },
+          itensDevolucao: [
+            {
+              bem: { idBem: bemId },
+              quantidade: quantidade,
+            },
+          ],
         });
       } else if (type === 'baixar') {
         response = await api.post('/bens/baixar', {
@@ -153,6 +163,17 @@ function ProcessosBem() {
             <p className="text-gray-500 mt-2">Nome do Bem: {bemNome || 'Digite o ID do bem'}</p>
           </div>
           <div className="mb-4">
+            <label className="block text-gray-700">Quantidade:</label>
+            <input
+              type="number"
+              value={quantidade}
+              onChange={(e) => setQuantidade(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              min="1"
+              required
+            />
+          </div>
+          <div className="mb-4">
             <label className="block text-gray-700">ID da Pessoa:</label>
             <input
               type="text"
@@ -191,6 +212,17 @@ function ProcessosBem() {
               required
             />
             <p className="text-gray-500 mt-2">Nome do Bem: {bemNome || 'Digite o ID do bem'}</p>
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700">Quantidade:</label>
+            <input
+              type="number"
+              value={quantidade}
+              onChange={(e) => setQuantidade(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              min="1"
+              required
+            />
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">ID da Pessoa:</label>
@@ -239,6 +271,7 @@ function ProcessosBem() {
               value={quantidade}
               onChange={(e) => setQuantidade(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded"
+              min="1"
               required
             />
           </div>
@@ -268,6 +301,7 @@ function ProcessosBem() {
               value={quantidade}
               onChange={(e) => setQuantidade(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded"
+              min="1"
               required
             />
           </div>

@@ -2,12 +2,9 @@
     display: flex;
 }
 
-
 .content {
     margin-left: 200px;
-    /* Adjust margin to account for sidebar */
     padding: 20px;
-    /* Add padding to avoid content being hidden behind the sidebar */
     border: 1px solid #ddd;
     border-radius: 5px;
     background-color: #f9f9f9;

@@ -4,30 +4,32 @@ import api from "../api/api";
 function Cadastros() {
   const [activeTab, setActiveTab] = useState("bens");
 
-  const [bemNome, setBemNome] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [permiteReserva, setPermiteReserva] = useState(false);
+  const [statusBem, setStatusBem] = useState("DISPONIVEL");
+  const [tipoBem, setTipoBem] = useState("EQUIPAMENTO");
+
+  const statusBemOptions = ["DISPONIVEL", "EM_MANUTENCAO", "RESERVADO"];
+  const tipoBemOptions = ["EQUIPAMENTO", "FERRAMENTA", "OUTRO"];
+
   const [kitNome, setKitNome] = useState("");
   const [kitItens, setKitItens] = useState([]);
-  const [kitItemInput, setKitItemInput] = useState("");
-  const [tipoBemNome, setTipoBemNome] = useState("");
-  const [tipoBemSelecionado, setTipoBemSelecionado] = useState("");
-
-  const [tiposBens, setTiposBens] = useState([]);
+  const [bensDisponiveis, setBensDisponiveis] = useState([]);
 
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    // Fetch tipos de bens disponíveis
-    const fetchTiposBens = async () => {
+    const fetchBens = async () => {
       try {
-        const response = await api.get("/tipos-bens");
-        setTiposBens(response.data);
+        const response = await api.get("/bens");
+        setBensDisponiveis(response.data);
       } catch (err) {
-        console.error("Erro ao buscar tipos de bens:", err);
+        console.error("Erro ao buscar bens:", err);
       }
     };
 
-    fetchTiposBens();
+    fetchBens();
   }, []);
 
   const handleTabChange = (tab) => {
@@ -36,49 +38,59 @@ function Cadastros() {
     setSuccess(false);
   };
 
-  const handleSubmit = async (e, type) => {
+  const handleSubmitBem = async (e) => {
     e.preventDefault();
     setError(null);
     setSuccess(false);
 
     try {
-      let response;
-      if (type === "bem") {
-        response = await api.post("/bens", {
-          nome: bemNome,
-          tipoBem: tipoBemSelecionado,
-        });
-        setBemNome("");
-        setTipoBemSelecionado("");
-      } else if (type === "kit") {
-        response = await api.post("/kits", {
-          nome: kitNome,
-          itens: kitItens,
-        });
-        setKitNome("");
-        setKitItens([]);
-      } else if (type === "tipoBem") {
-        response = await api.post("/tipos-bens", { nome: tipoBemNome });
-        setTipoBemNome("");
-      }
-
-      console.log(`${type} cadastrado:`, response.data);
+      const response = await api.post("/bens", {
+        descricao,
+        permiteReserva,
+        statusBem,
+        tipoBem,
+      });
+      console.log("Bem cadastrado:", response.data);
+      setDescricao("");
+      setPermiteReserva(false);
+      setStatusBem("DISPONIVEL");
+      setTipoBem("EQUIPAMENTO");
       setSuccess(true);
     } catch (err) {
-      setError(`Erro ao cadastrar ${type}. Tente novamente.`);
-      console.error(`Erro ao cadastrar ${type}:`, err);
+      setError("Erro ao cadastrar bem. Tente novamente.");
+      console.error("Erro ao cadastrar bem:", err);
     }
   };
 
-  const handleAddKitItem = () => {
-    if (kitItemInput.trim() !== "") {
-      setKitItens([...kitItens, kitItemInput.trim()]);
-      setKitItemInput("");
+  const handleSubmitKit = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(false);
+  
+    try {
+      const bemIds = kitItens.map((bem) => bem.idBem);
+      const response = await api.post("/kits", {
+        nome: kitNome,
+        bemIds,
+      });
+      console.log("Kit cadastrado:", response.data);
+      setKitNome("");
+      setKitItens([]);
+      setSuccess(true);
+    } catch (err) {
+      setError("Erro ao cadastrar kit. Tente novamente.");
+      console.error("Erro ao cadastrar kit:", err);
     }
   };
 
-  const handleRemoveKitItem = (index) => {
-    setKitItens(kitItens.filter((_, i) => i !== index));
+  const handleAddKitItem = (bem) => {
+    if (!kitItens.find((item) => item.idBem === bem.idBem)) {
+      setKitItens([...kitItens, bem]);
+    }
+  };
+
+  const handleRemoveKitItem = (bemId) => {
+    setKitItens(kitItens.filter((item) => item.idBem !== bemId));
   };
 
   return (
@@ -97,41 +109,58 @@ function Cadastros() {
         >
           Kits
         </button>
-        <button
-          onClick={() => handleTabChange("tiposBens")}
-          className={`p-2 ${activeTab === "tiposBens" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
-        >
-          Tipos de Bens
-        </button>
       </div>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}
       {success && <p className="text-green-500 mb-4">Cadastro realizado com sucesso!</p>}
 
       {activeTab === "bens" && (
-        <form onSubmit={(e) => handleSubmit(e, "bem")}>
+        <form onSubmit={handleSubmitBem}>
           <div className="mb-4">
-            <label className="block text-gray-700">Nome do Bem:</label>
+            <label className="block text-gray-700">Descrição do Bem:</label>
             <input
               type="text"
-              value={bemNome}
-              onChange={(e) => setBemNome(e.target.value)}
+              value={descricao}
+              onChange={(e) => setDescricao(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded"
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Tipo de Bem:</label>
+            <label className="block text-gray-700">Permite Reserva:</label>
+            <input
+              type="checkbox"
+              checked={permiteReserva}
+              onChange={(e) => setPermiteReserva(e.target.checked)}
+              className="ml-2"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700">Status do Bem:</label>
             <select
-              value={tipoBemSelecionado}
-              onChange={(e) => setTipoBemSelecionado(e.target.value)}
+              value={statusBem}
+              onChange={(e) => setStatusBem(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded"
               required
             >
-              <option value="">Selecione um tipo de bem</option>
-              {tiposBens.map((tipo) => (
-                <option key={tipo.id} value={tipo.nome}>
-                  {tipo.nome}
+              {statusBemOptions.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700">Tipo de Bem:</label>
+            <select
+              value={tipoBem}
+              onChange={(e) => setTipoBem(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            >
+              {tipoBemOptions.map((tipo) => (
+                <option key={tipo} value={tipo}>
+                  {tipo}
                 </option>
               ))}
             </select>
@@ -143,7 +172,7 @@ function Cadastros() {
       )}
 
       {activeTab === "kits" && (
-        <form onSubmit={(e) => handleSubmit(e, "kit")}>
+        <form onSubmit={handleSubmitKit}>
           <div className="mb-4">
             <label className="block text-gray-700">Nome do Kit:</label>
             <input
@@ -157,27 +186,25 @@ function Cadastros() {
           <div className="mb-4">
             <label className="block text-gray-700">Itens do Kit:</label>
             <div className="flex mb-2">
-              <input
-                type="text"
-                value={kitItemInput}
-                onChange={(e) => setKitItemInput(e.target.value)}
+              <select
+                onChange={(e) => handleAddKitItem(JSON.parse(e.target.value))}
                 className="w-full p-2 border border-gray-300 rounded"
-              />
-              <button
-                type="button"
-                onClick={handleAddKitItem}
-                className="bg-blue-500 text-white p-2 rounded ml-2"
               >
-                Adicionar
-              </button>
+                <option value="">Selecione um bem para adicionar</option>
+                {bensDisponiveis.map((bem) => (
+                  <option key={bem.idBem} value={JSON.stringify(bem)}>
+                    {bem.descricao}
+                  </option>
+                ))}
+              </select>
             </div>
             <ul>
-              {kitItens.map((item, index) => (
-                <li key={index} className="flex justify-between items-center mb-2">
-                  {item}
+              {kitItens.map((item) => (
+                <li key={item.idBem} className="flex justify-between items-center mb-2">
+                  {item.descricao}
                   <button
                     type="button"
-                    onClick={() => handleRemoveKitItem(index)}
+                    onClick={() => handleRemoveKitItem(item.idBem)}
                     className="bg-red-500 text-white p-1 rounded"
                   >
                     Remover
@@ -188,24 +215,6 @@ function Cadastros() {
           </div>
           <button type="submit" className="bg-blue-500 text-white p-2 rounded w-full">
             Cadastrar Kit
-          </button>
-        </form>
-      )}
-
-      {activeTab === "tiposBens" && (
-        <form onSubmit={(e) => handleSubmit(e, "tipoBem")}>
-          <div className="mb-4">
-            <label className="block text-gray-700">Nome do Tipo de Bem:</label>
-            <input
-              type="text"
-              value={tipoBemNome}
-              onChange={(e) => setTipoBemNome(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
-              required
-            />
-          </div>
-          <button type="submit" className="bg-blue-500 text-white p-2 rounded w-full">
-            Cadastrar Tipo de Bem
           </button>
         </form>
       )}

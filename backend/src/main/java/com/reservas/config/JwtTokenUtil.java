@@ -12,12 +12,12 @@ public class JwtTokenUtil {
 
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256); 
 
-    private final long expiration = 3600000;
+    private final long expiration = 1000*60*60; // 1 hora
 
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
-                .setIssuer("SuaAplicacao")
+                .setIssuer("ReservasApp")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(key)

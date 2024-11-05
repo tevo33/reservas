@@ -14,7 +14,7 @@ function MainMenu() {
   const { handleLogout } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const userName = "Usuário"; // Ajuste para obter o nome real do usuário, se disponível
+  const userName = localStorage.getItem('userName');
 
   const logout = () => {
     handleLogout();

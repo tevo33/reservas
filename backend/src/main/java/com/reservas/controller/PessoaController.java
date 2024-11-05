@@ -9,12 +9,9 @@ import com.reservas.service.PessoaService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +25,6 @@ public class PessoaController
     private final JwtTokenUtil jwtTokenUtil;
     private final PessoaService pessoaService;
 
-    @Autowired
     public PessoaController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, PessoaService pessoaService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
@@ -62,19 +58,27 @@ public class PessoaController
     {
         try 
         {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken( loginRequest.getCodigo(), loginRequest.getSenha() ) );
-                            
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken( loginRequest.getCodigo(), 
+                                                                                        loginRequest.getSenha() ) );
+                                                                                        
+            String userName = "";
+
+            if ( pessoaService.buscarPorCodigo( loginRequest.getCodigo() ).isPresent() )
+            {
+                userName = pessoaService.buscarPorCodigo( loginRequest.getCodigo() ).get().getNome();
+            }      
+
             String token = jwtTokenUtil.generateToken(loginRequest.getCodigo());
 
-            return ResponseEntity.ok(new JwtResponse(token));
+            return ResponseEntity.ok(new JwtResponse(token, userName));
         }
         
         catch (Exception e) 
         {
-            return ResponseEntity.status(401).body("Credenciais inválidas");
+            return ResponseEntity.status(401).build();
         } 
     }
+    
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().invalidate();
