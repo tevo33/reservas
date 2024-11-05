@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/reservas")
+@RequestMapping("/api/reservas")
 public class ReservaController {
 
     @Autowired

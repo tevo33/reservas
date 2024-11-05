@@ -8,8 +8,8 @@ import java.security.Key;
 import java.util.Date;
 
 @Component
-public class JwtTokenUtil {
-
+public class JwtTokenUtil 
+{
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256); 
 
     private final long expiration = 1000*60*60; // 1 hora

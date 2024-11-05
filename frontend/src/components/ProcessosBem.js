@@ -9,13 +9,16 @@ function ProcessosBem() {
   const [pessoaId, setPessoaId] = useState('');
   const [pessoaNome, setPessoaNome] = useState('');
   const [data, setData] = useState('');
+  const [dataDevolucao, setDataDevolucao] = useState('');
+  const [observacao, setObservacao] = useState('');
+  const [motivoRetirada, setMotivoRetirada] = useState('USO_INTERNO');
   const [quantidade, setQuantidade] = useState(1);
 
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    // Set the current date as the default value
+    // Define a data atual como valor padrão
     const today = new Date().toISOString().split('T')[0];
     setData(today);
   }, []);
@@ -64,6 +67,9 @@ function ProcessosBem() {
     setPessoaNome('');
     const today = new Date().toISOString().split('T')[0];
     setData(today);
+    setDataDevolucao('');
+    setObservacao('');
+    setMotivoRetirada('USO_INTERNO');
     setQuantidade(1);
   };
 
@@ -77,35 +83,23 @@ function ProcessosBem() {
       if (type === 'retirada') {
         response = await api.post('/retiradas', {
           data,
-          pessoa: { id: pessoaId },
+          dataDevolucao: dataDevolucao || null,
+          observacao,
+          motivoRetirada,
+          pessoaId: parseInt(pessoaId),
           itensRetirada: [
             {
-              bem: { idBem: bemId },
-              quantidade: quantidade,
+              bemId: parseInt(bemId),
+              quantidade: parseInt(quantidade),
             },
           ],
         });
       } else if (type === 'devolucao') {
-        response = await api.post('/devolucoes', {
-          data,
-          pessoa: { id: pessoaId },
-          itensDevolucao: [
-            {
-              bem: { idBem: bemId },
-              quantidade: quantidade,
-            },
-          ],
-        });
+        // Implementar lógica para 'devolucao' quando disponível
       } else if (type === 'baixar') {
-        response = await api.post('/bens/baixar', {
-          bemId,
-          quantidade,
-        });
+        // Implementar lógica para 'baixar' quando disponível
       } else if (type === 'repor') {
-        response = await api.post('/bens/repor', {
-          bemId,
-          quantidade,
-        });
+        // Implementar lógica para 'repor' quando disponível
       }
 
       console.log(`${type} realizada:`, response.data);
@@ -185,7 +179,7 @@ function ProcessosBem() {
             <p className="text-gray-500 mt-2">Nome da Pessoa: {pessoaNome || 'Digite o ID da pessoa'}</p>
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Data:</label>
+            <label className="block text-gray-700">Data de Retirada:</label>
             <input
               type="date"
               value={data}
@@ -194,13 +188,44 @@ function ProcessosBem() {
               required
             />
           </div>
+          <div className="mb-4">
+            <label className="block text-gray-700">Data de Devolução:</label>
+            <input
+              type="date"
+              value={dataDevolucao}
+              onChange={(e) => setDataDevolucao(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700">Motivo da Retirada:</label>
+            <select
+              value={motivoRetirada}
+              onChange={(e) => setMotivoRetirada(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            >
+              <option value="USO_INTERNO">Uso Interno</option>
+              <option value="EMPRESTIMO">Empréstimo</option>
+              <option value="MANUTENCAO">Manutenção</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700">Observação:</label>
+            <textarea
+              value={observacao}
+              onChange={(e) => setObservacao(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              rows="3"
+            />
+          </div>
           <button type="submit" className="bg-blue-500 text-white p-2 rounded w-full">
             Realizar Retirada
           </button>
         </form>
       )}
 
-      {activeTab === 'devolucao' && (
+{activeTab === 'devolucao' && (
         <form onSubmit={(e) => handleSubmit(e, 'devolucao')}>
           <div className="mb-4">
             <label className="block text-gray-700">ID do Bem:</label>
