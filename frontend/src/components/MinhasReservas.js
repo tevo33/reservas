@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import api from '../api/api';
 
 function MinhasReservas() {
   const [reservasAtuais, setReservasAtuais] = useState([]);
@@ -11,26 +10,28 @@ function MinhasReservas() {
   const [dataFim, setDataFim] = useState('');
 
   useEffect(() => {
-    // Fetch reservas atuais do usuário ao montar o componente
-    const fetchReservasAtuais = async () => {
-      try {
-        const response = await api.get('/minhas-reservas/atuais');
-        const atuais = response.data;
-        const noPrazo = atuais.filter(reserva => new Date(reserva.dataFim) >= new Date());
-        const atrasadas = atuais.filter(reserva => new Date(reserva.dataFim) < new Date());
-        setReservasAtuais(atuais);
-        setReservasNoPrazo(noPrazo);
-        setReservasAtrasadas(atrasadas);
-      } catch (err) {
-        setError('Erro ao buscar reservas atuais. Tente novamente.');
-        console.error('Erro ao buscar reservas atuais:', err);
-      }
-    };
+    // Dados fictícios de reservas atuais (uma no prazo e uma atrasada)
+    const atuais = [
+      {
+        id: 1,
+        item: 'Livro de Java',
+        dataFim: '2024-12-01', // No prazo
+      },
+      {
+        id: 2,
+        item: 'Notebook emprestado',
+        dataFim: '2024-10-01', // Atrasada
+      },
+    ];
 
-    fetchReservasAtuais();
+    const noPrazo = atuais.filter(reserva => new Date(reserva.dataFim) >= new Date());
+    const atrasadas = atuais.filter(reserva => new Date(reserva.dataFim) < new Date());
+    setReservasAtuais(atuais);
+    setReservasNoPrazo(noPrazo);
+    setReservasAtrasadas(atrasadas);
   }, []);
 
-  const handleBuscarReservas = async () => {
+  const handleBuscarReservas = () => {
     setError(null);
     setReservas([]);
 
@@ -39,18 +40,21 @@ function MinhasReservas() {
       return;
     }
 
-    try {
-      const response = await api.get('/minhas-reservas', {
-        params: {
-          dataInicio,
-          dataFim,
-        },
-      });
-      setReservas(response.data);
-    } catch (err) {
-      setError('Erro ao buscar reservas. Tente novamente.');
-      console.error('Erro ao buscar reservas:', err);
-    }
+    // Dados fictícios para reservas no período especificado
+    const reservasNoPeriodo = [
+      {
+        id: 3,
+        item: 'Mesa de estudos',
+        dataReserva: '2024-11-10',
+      },
+      {
+        id: 4,
+        item: 'Cadeira de escritório',
+        dataReserva: '2024-11-15',
+      },
+    ];
+
+    setReservas(reservasNoPeriodo);
   };
 
   return (

@@ -1,26 +1,42 @@
 import React, { useState } from 'react';
-import api from '../api/api';
 
 function Reservas() {
   const [itemId, setItemId] = useState('');
   const [reservas, setReservas] = useState([]);
   const [error, setError] = useState(null);
 
-  const handleBuscarReservas = async () => {
+  const handleBuscarReservas = () => {
     setError(null);
-    setReservas([]);
 
     if (!itemId) {
       setError('Por favor, insira o ID do item.');
+      setReservas([]);
       return;
     }
 
-    try {
-      const response = await api.get(`/reservas/${itemId}`);
-      setReservas(response.data);
-    } catch (err) {
-      setError('Erro ao buscar reservas. Tente novamente.');
-      console.error('Erro ao buscar reservas:', err);
+    // Dados fictícios com apenas duas pessoas
+    const dadosFicticios = [
+      {
+        id: 1,
+        pessoa: 'Estevão Busch Guerra',
+        dataReserva: '2024-12-01',
+      },
+      {
+        id: 2,
+        pessoa: 'Tiago Patzlaff',
+        dataReserva: '2024-12-05',
+      },
+    ];
+
+    setReservas(dadosFicticios);
+  };
+
+  const handleItemIdChange = (e) => {
+    setItemId(e.target.value);
+
+    // Limpa as reservas quando o campo fica vazio
+    if (e.target.value === '') {
+      setReservas([]);
     }
   };
 
@@ -32,7 +48,7 @@ function Reservas() {
         <input
           type="text"
           value={itemId}
-          onChange={(e) => setItemId(e.target.value)}
+          onChange={handleItemIdChange}
           className="w-full p-2 border border-gray-300 rounded"
         />
       </div>

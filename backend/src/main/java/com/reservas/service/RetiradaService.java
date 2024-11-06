@@ -24,7 +24,9 @@ public class RetiradaService {
     public Retirada criarRetirada(Retirada retirada) {
         return retiradaRepository.save(retirada);
     }
-
+    public Retirada atualizarRetirada(Retirada retirada) {
+        return retiradaRepository.save(retirada);
+    }
     public void deletarRetirada(Long idRetirada) {
         retiradaRepository.deleteById(idRetirada);
     }

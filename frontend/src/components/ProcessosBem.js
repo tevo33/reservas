@@ -95,8 +95,20 @@ function ProcessosBem() {
           ],
         });
       } else if (type === 'devolucao') {
-        // Implementar lógica para 'devolucao' quando disponível
-      } else if (type === 'baixar') {
+        response = await api.put('/retiradas/devolver', {
+          data,
+          dataDevolucao: dataDevolucao || null,
+          observacao,
+          motivoRetirada,
+          pessoaId: parseInt(pessoaId),
+          itensRetirada: [
+            {
+              bemId: parseInt(bemId),
+              quantidade: parseInt(quantidade),
+            },
+          ],
+        });   
+         } else if (type === 'baixar') {
         // Implementar lógica para 'baixar' quando disponível
       } else if (type === 'repor') {
         // Implementar lógica para 'repor' quando disponível
@@ -189,7 +201,7 @@ function ProcessosBem() {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Data de Devolução:</label>
+            <label className="block text-gray-700">Data limite de Devolução:</label>
             <input
               type="date"
               value={dataDevolucao}
