@@ -21,6 +21,10 @@ function ProcessosBem() {
     // Define a data atual como valor padrão
     const today = new Date().toISOString().split('T')[0];
     setData(today);
+    // Define a data de devolução para 14 dias após a data atual
+    const devolucao = new Date();
+    devolucao.setDate(devolucao.getDate() + 14);
+    setDataDevolucao(devolucao.toISOString().split('T')[0]);
   }, []);
 
   useEffect(() => {
@@ -57,6 +61,15 @@ function ProcessosBem() {
     }
   }, [pessoaId]);
 
+  useEffect(() => {
+    // Atualiza a data de devolução para 14 dias após a data de retirada
+    if (data) {
+      const devolucao = new Date(data);
+      devolucao.setDate(devolucao.getDate() + 14);
+      setDataDevolucao(devolucao.toISOString().split('T')[0]);
+    }
+  }, [data]);
+
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     setError(null);
@@ -67,7 +80,9 @@ function ProcessosBem() {
     setPessoaNome('');
     const today = new Date().toISOString().split('T')[0];
     setData(today);
-    setDataDevolucao('');
+    const devolucao = new Date();
+    devolucao.setDate(devolucao.getDate() + 14);
+    setDataDevolucao(devolucao.toISOString().split('T')[0]);
     setObservacao('');
     setMotivoRetirada('USO_INTERNO');
     setQuantidade(1);
@@ -190,24 +205,26 @@ function ProcessosBem() {
             />
             <p className="text-gray-500 mt-2">Nome da Pessoa: {pessoaNome || 'Digite o ID da pessoa'}</p>
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">Data de Retirada:</label>
-            <input
-              type="date"
-              value={data}
-              onChange={(e) => setData(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">Data limite de Devolução:</label>
-            <input
-              type="date"
-              value={dataDevolucao}
-              onChange={(e) => setDataDevolucao(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
-            />
+          <div className="flex space-x-4 mb-4">
+            <div className="flex-1">
+              <label className="block text-gray-700">Data de Retirada:</label>
+              <input
+                type="date"
+                value={data}
+                onChange={(e) => setData(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded"
+                required
+              />
+            </div>
+            <div className="flex-1">
+              <label className="block text-gray-700">Data de Devolução:</label>
+              <input
+                type="date"
+                value={dataDevolucao}
+                onChange={(e) => setDataDevolucao(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </div>
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">Motivo da Retirada:</label>
@@ -237,7 +254,7 @@ function ProcessosBem() {
         </form>
       )}
 
-{activeTab === 'devolucao' && (
+      {activeTab === 'devolucao' && (
         <form onSubmit={(e) => handleSubmit(e, 'devolucao')}>
           <div className="mb-4">
             <label className="block text-gray-700">ID do Bem:</label>
